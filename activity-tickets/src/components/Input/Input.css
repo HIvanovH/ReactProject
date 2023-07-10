@@ -1,0 +1,47 @@
+﻿.textbox-container {
+  margin-bottom: 10px;
+}
+
+.textbox-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.textbox-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.textbox-input:focus {
+  outline: none;
+  border-color: #5ccc00;
+  box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+}
+.textbox-container.invalid input {
+  border-color: red;
+}
+
+.textbox-container.invalid .error-message {
+  color: red;
+}
+/* .error-message {
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  padding: 3px;
+  color: rgb(54, 0, 0);
+  text-shadow: 1px 1px rgb(226, 0, 0);
+  display: none;
+} */
+/* 
+.textbox-input:focus {
+  display: block;
+}
+.textbox-input:focus {
+  border: 3px solid rgba(255, 0, 0, 0.621);
+  color: rgb(54, 0, 0);
+  text-shadow: 1px 1px rgb(226, 0, 0);
+} */
