@@ -1,46 +1,74 @@
-﻿import React from "react";
+﻿import styled from "styled-components";
 
-import "./Footer.css";
+const FooterContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  font-weight: bold;
+  background-color: var(--mint);
+  box-shadow: 0px 4px 2px gray;
+`;
 
-const Footer: React.FC = () => {
+const FooterSocialMedia = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  a {
+    text-decoration: none;
+  }
+`;
+
+const FooterInfo = styled.section`
+  display: flex;
+  justify-content: center;
+`;
+
+const FooterInfoColumn = styled.section`
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 30%;
+
+  div {
+    margin-bottom: 1rem;
+  }
+
+  text-align: center;
+`;
+const FooterC = styled.footer`
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--light-purple);
+  width: 100%;
+  color: var(--butter);
+`;
+const Footer = () => {
   return (
-    <section className="footer">
-      <hr className="footer-seperator" />
-      <section className="footer-social-media">
-        <a href="/" target="_blank" rel="noopener noreferrer">
-          LinkedIn
-        </a>
-      </section>
-      <section className="footer-info">
-        <section className="footer-info-left">
-          <section className="footer-info__name">
-            Software Engineer Haydn
-          </section>
-          <section className="footer-info__returns">
-            Returns Policy
-            <br />
-            Delivery
-          </section>
-        </section>
-        <section className="footer-info-center">
-          <section className="footer-info__email">shop.info@gmail.com</section>
-          <section className="footer-info__terms">
-            Terms and Conditions
-            <br />
-            Copyright
-          </section>
-        </section>
-        <section className="footer-info-right">
-          <section className="footer-info__number">99999999999</section>
-          <section className="footer-info__contact">
-            My Story
-            <br />
-            Contact Us
-          </section>
-        </section>
-      </section>
-      <hr className="footer-seperator" />
-    </section>
+    <FooterContainer>
+      <hr />
+
+      <FooterInfo>
+        <FooterInfoColumn>
+          <div>За нас</div>
+          <div>Общи условия</div>
+          <div>Политика на поверителност</div>
+        </FooterInfoColumn>
+        <FooterInfoColumn>
+          <div>events_organizer@gmail.com</div>
+          <div>Често задавани въпроси</div>
+          <div>Контакти</div>
+        </FooterInfoColumn>
+      </FooterInfo>
+      <FooterSocialMedia>
+        <FooterC>
+          <p>&copy; 2023 EventOrganizer. All rights reserved.</p>
+        </FooterC>
+      </FooterSocialMedia>
+      <hr />
+    </FooterContainer>
   );
 };
 

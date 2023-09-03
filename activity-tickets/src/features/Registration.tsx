@@ -1,7 +1,11 @@
-﻿import React, { useState, ChangeEvent, FormEvent } from "react";
-import Textbox from "../components/Input/Textbox";
+﻿import { useState, ChangeEvent, FormEvent } from "react";
+
 import "./styles/Register.css";
 import FormInput from "../components/Input/FormInput";
+import axios from "axios";
+import { registrationUrl } from "../constants/url.constants";
+import { RegisterDTO } from "../DTOs/RegisterDTO";
+import { useNavigate } from "react-router-dom";
 interface RegisterPageState {
   name: string;
   lastname: string;
@@ -11,6 +15,7 @@ interface RegisterPageState {
 }
 
 function RegisterPage() {
+  const navigate = useNavigate();
   const [values, setValues] = useState<RegisterPageState>({
     name: "",
     lastname: "",
@@ -23,8 +28,28 @@ function RegisterPage() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newAccountData: RegisterDTO = {
+      name: values.name,
+      lastname: values.lastname,
+      email: values.email,
+      password: values.password,
+    };
+
+    setNewAccount([newAccountData]);
+
+    try {
+      const response = await axios.post(registrationUrl, newAccountData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      navigate("/");
+    } catch (error) {
+      alert("Error occurred while sending data to the server");
+    }
   };
 
   const inputs = [
@@ -81,6 +106,7 @@ function RegisterPage() {
       required: true,
     },
   ];
+  const [newAccount, setNewAccount] = useState<RegisterDTO[]>([]);
 
   return (
     <div className="register">

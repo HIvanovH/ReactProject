@@ -1,14 +1,18 @@
 ﻿import React, { useState, ChangeEvent, useEffect, useRef } from "react";
-import "./Navbar/Searchbar.css";
-import CustomLink from "./Navbar/CustomLink";
+import styled from "styled-components";
+import CustomLink from "./CustomLink";
+import { baseUrl } from "../constants/url.constants";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface SearchResult {
+  id: number;
   title: string;
 }
 
 interface SearchBarProps {
   placeholder: string;
-  data: SearchResult[];
+  data?: SearchResult[];
   onSearch?: (searchTerm: string) => void;
   shouldFocus?: boolean;
   onFocus?: () => void;
@@ -17,7 +21,6 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({
   placeholder,
-  data,
   onSearch,
   onFocus,
   shouldFocus,
@@ -29,8 +32,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const searchBarRef = useRef<HTMLDivElement>(null);
   const prevShouldFocus = useRef(shouldFocus);
+  const [data, setData] = useState<SearchResult[]>([]);
+  const navigate = useNavigate();
+  const fetchProductsList = async () => {
+    try {
+      const response = await axios.get<SearchResult[]>(baseUrl);
+      setFilteredData(response.data);
+      setData(response.data);
+    } catch (error) {
+      alert("Не могат да се заредят данните от базата");
+    }
+  };
 
   useEffect(() => {
+    fetchProductsList();
     if (shouldFocus && inputRef.current) {
       inputRef.current.focus();
       setIsDropdown(true);
@@ -93,13 +108,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
     if (onItemClick) {
       onItemClick(item);
     }
+    navigate(`/events/${item.id}`);
     clearInput();
   };
 
   return (
-    <div className="search" ref={searchBarRef}>
-      <div className="searchInputs">
-        <input
+    <SearchWrapper ref={searchBarRef}>
+      <SearchInputs>
+        <SearchInput
           type="text"
           placeholder={placeholder}
           value={wordEntered}
@@ -107,33 +123,116 @@ const SearchBar: React.FC<SearchBarProps> = ({
           ref={inputRef}
           onFocus={handleFocus}
         />
-        <div className="searchIcon">
+        <SearchIcon>
           {filteredData.length === 0 ? (
             <div />
           ) : (
-            <div id="clearBtn" onClick={clearInput} />
+            <ClearButton id="clearBtn" onClick={clearInput} />
           )}
-        </div>
-      </div>
+        </SearchIcon>
+      </SearchInputs>
       {filteredData.length !== 0 && (
-        <div className={`results ${!isDropdown ? "show" : ""}`}>
-          {filteredData.slice(0, 15).map((value, key) => {
-            return (
-              <div
-                className="dataItem"
-                key={key}
-                onClick={() => handleItemClick(value)}
-              >
-                <CustomLink to={("/events/" + value.title) as string}>
-                  {value.title}
-                </CustomLink>
-              </div>
-            );
-          })}
-        </div>
+        <Results className={isDropdown ? "show" : ""}>
+          {filteredData.slice(0, 15).map((value, key) => (
+            <DataItem key={key} onClick={() => handleItemClick(value)}>
+              <Title to={`/events/${value.id}`}>{value.title}</Title>
+            </DataItem>
+          ))}
+        </Results>
       )}
-    </div>
+    </SearchWrapper>
   );
 };
 
 export default SearchBar;
+
+const SearchWrapper = styled.div`
+  &active {
+    border-color: var(--butter);
+  }
+`;
+
+const SearchInputs = styled.div`
+  margin-left: 3em;
+  margin-right: 2em;
+  display: flex;
+  border: 0rem solid;
+  &active {
+    border-color: var(--butter);
+  }
+`;
+
+const SearchInput = styled.input`
+  background-color: inherit;
+  border: 0.15em solid #ccc;
+  border-color: #00000024;
+  border-radius: 1em;
+  font-size: 1em;
+  padding: 1.3em;
+  height: 1.5em;
+  width: 15em;
+
+  &active {
+    border-color: var(--butter);
+    background-color: var(--butter);
+  }
+
+  &:hover {
+    border-color: var(--butter);
+    transition: border-color 2s, background-color 2s;
+    background-color: var(--butter);
+  }
+`;
+
+const SearchIcon = styled.div``;
+
+const ClearButton = styled.div``;
+
+const Results = styled.div`
+  font-weight: bold;
+  position: absolute;
+  font-size: 0.875rem;
+  z-index: 9999;
+  width: 30em;
+  padding: 0.2em;
+  left: 52%;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  background-color: var(--light-purple);
+  border-radius: 0.5rem;
+  font-weight: bold;
+  margin-left: 1.8em;
+  margin-top: 0.3em;
+  display: none;
+
+  &.show {
+    display: block;
+  }
+`;
+
+const DataItem = styled.div`
+  font-family: "Courier New", Courier, monospace, serif;
+  font-weight: bold;
+  position: relative;
+  font-size: 1.6em;
+  padding: 0.1em 1em;
+  margin-top: 0.2em;
+  color: var(--butter);
+  height: 2.5rem;
+  box-shadow: 0 0 5px 1px #8585856e;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  &:hover {
+    background-color: var(--butter);
+    transition: background-color 0.3s;
+    color: var(--light-purple);
+  }
+`;
+const Title = styled(CustomLink)`
+  text-decoration: inherit;
+  color: inherit;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;

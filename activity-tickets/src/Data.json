@@ -1,5 +1,6 @@
 ﻿[
   {
+    "id": 21,
     "author": "Chinua Achebe",
     "country": "Nigeria",
     "imageLink": "images/things-fall-apart.jpg",
@@ -10,6 +11,7 @@
     "year": 1958
   },
   {
+    "id": 22,
     "author": "Hans Christian Andersen",
     "country": "Denmark",
     "imageLink": "images/fairy-tales.jpg",

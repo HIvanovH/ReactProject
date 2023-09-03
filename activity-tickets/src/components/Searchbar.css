@@ -7,12 +7,17 @@
 .search input {
   background-color: inherit;
   border: 0.15em solid #ccc;
-  border-color: black;
+  border-color: #00000017;
   border-radius: 2em;
   font-size: 1em;
   padding: 1.3em;
   height: 2em;
   width: 15em;
+}
+
+.search input:hover {
+  border-color: #37d0eb;
+  transition: border-color 2s;
 }
 .results.show {
   display: block;
@@ -29,7 +34,6 @@
   font-weight: bold;
   position: relative;
   font-size: 1.6em;
-  border: 0.01em solid black;
   padding: 0em 1em;
   border-radius: 2em;
   margin-top: 2px;

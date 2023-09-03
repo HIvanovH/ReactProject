@@ -1,22 +1,29 @@
-import "./App.css";
 import "./index.css";
 import AppRouter from "./AppRouter";
-import "./components/Navbar/Style.css";
-import Header from "./components/Navbar/Header";
-import SearchBar from "./components/Searchbar";
-import TestData from "./Data.json";
 import { useEffect, useRef, useState } from "react";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import Nav from "./components/Nav";
+import { ShoppingCartProvider } from "./Context/ShoppingCartContext";
+import { useCookies } from "react-cookie";
+import styled from "styled-components";
+import Footer from "./components/Footer";
+import { useNavigate } from "react-router-dom";
 const App: React.FC = () => {
-  // const [user, setUser] = useState<User>({
-  //   email: undefined,
-  // });
-
-  // useEffect(() => {
-  //   setUser(initUser());
-  // }, [setUser]);
   const [dropdown, setDropdown] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
+  const [cookies, , removeCookie] = useCookies(["token"]);
+  const isLoggedIn = !!cookies["token"];
+  const navigate = useNavigate();
+
+  const Container = styled.div`
+    background-color: var(--butter);
+    height: 100%;
+    padding-bottom: 20rem;
+  `;
+  const handleLogout = () => {
+    navigate("/");
+    removeCookie("token");
+  };
 
   useEffect(() => {
     const handler = (event: MouseEvent | TouchEvent) => {
@@ -36,10 +43,13 @@ const App: React.FC = () => {
     };
   }, [dropdown]);
   return (
-    <div>
-      <Header></Header>
-      <AppRouter />
-    </div>
+    <ShoppingCartProvider>
+      <Container>
+        <Nav isLoggedIn={isLoggedIn} onLogout={handleLogout}></Nav>
+        <AppRouter />
+      </Container>
+      <Footer></Footer>
+    </ShoppingCartProvider>
   );
 };
 

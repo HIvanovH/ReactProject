@@ -14,6 +14,7 @@ const FormInput: React.FC<FormInputProps> = ({
   onBlur,
   onFocus,
   className,
+  children,
   ...inputProps
 }) => {
   const [focused, setFocused] = useState(false);
@@ -48,13 +49,10 @@ const FormInput: React.FC<FormInputProps> = ({
         {...inputProps}
         onChange={handleChange}
         onBlur={blurHandler}
-        // onFocus={() =>
-        //   inputProps.name === "confirmPassword" && setFocused(true)
-        // }
         onFocus={focusHandler}
         className={`input-register`}
       />
-
+      {children}
       {isBlur && !isValid && <p className="error">{errorMessage}</p>}
     </div>
   );
