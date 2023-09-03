@@ -61,6 +61,7 @@ const AdminPage: React.FC = () => {
     time: "",
     price: 0,
     quantity: 0,
+    imagePath: "",
   });
 
   const [tickets, setTickets] = useState<ITicket[]>([]);
@@ -90,6 +91,7 @@ const AdminPage: React.FC = () => {
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    debugger;
     setTicket((prevTicket) => ({
       ...prevTicket,
       [name]: name === "price" ? parseFloat(value) || 0 : value,
@@ -110,7 +112,6 @@ const AdminPage: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     try {
       const headers = { Authorization: `Bearer ${cookies.token.result}` };
       await axios.post("http://localhost:5104/CreateTickets", ticket, {
@@ -127,6 +128,7 @@ const AdminPage: React.FC = () => {
         location: "",
         price: 0,
         quantity: 0,
+        imagePath: "",
       });
     } catch (error) {
       console.error("Error adding ticket:", error);
@@ -153,7 +155,7 @@ const AdminPage: React.FC = () => {
           <textarea
             name="description"
             value={ticket.description}
-            onChange={handleTextareaChange} // Use the adjusted event handler
+            onChange={handleTextareaChange}
             required
             rows={4}
             style={{ marginBottom: "1rem" }}
@@ -217,6 +219,16 @@ const AdminPage: React.FC = () => {
               type="number"
               step="1.0"
               value={ticket.quantity}
+              onChange={handleInputChange}
+              required
+            />
+          </Label>
+          <Label>
+            снимка:
+            <Input
+              type="text"
+              name="imagePath"
+              value={ticket.imagePath}
               onChange={handleInputChange}
               required
             />

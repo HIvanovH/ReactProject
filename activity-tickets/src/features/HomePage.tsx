@@ -121,32 +121,32 @@ const HomePage: React.FC = () => {
           <Styledh2>Предостоящи събития</Styledh2>
           <ImageSlider {...sliderSettings}>
             <div style={{ display: "inline-block" }}>
-              <EventImage src={beachEvent} alt="Beach Events" />
+              <EventImage src={"/imgs/retro.png"} alt="Retro Party" />
               <DetailsText to={`/events/1`} className="details">
                 Повече информация...
               </DetailsText>
             </div>
             <div>
-              <EventImage src={outdoorEvent} alt="Outdoor Events" />
+              <EventImage src={"imgs/grafa.png"} alt="Outdoor Events" />
               <DetailsText to={`/events/2`} className="details">
                 Повече информация...
               </DetailsText>
             </div>
             <div>
-              <EventImage src={event1} alt="Events" />
-              <DetailsText to={`/events/3`} className="details">
+              <EventImage src={"/imgs/signal.png"} alt="Events" />
+              <DetailsText to={`/events/16`} className="details">
                 Повече информация...
               </DetailsText>
             </div>
             <div>
-              <EventImage src={indoorEvent} alt="Indoor Events" />
-              <DetailsText to={`/events/4`} className="details">
+              <EventImage src={"/imgs/medii.png"} alt="Indoor Events" />
+              <DetailsText to={`/events/15`} className="details">
                 Повече информация...
               </DetailsText>
             </div>
             <div>
-              <EventImage src={conference} alt="Conference" />
-              <DetailsText to={`/events/5`} className="details">
+              <EventImage src={"/imgs/prikazki.png"} alt="Conference" />
+              <DetailsText to={`/events/14`} className="details">
                 Повече информация...
               </DetailsText>
             </div>

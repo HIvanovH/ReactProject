@@ -7,4 +7,5 @@
   location: string;
   time: string;
   quantity: 0;
+  imagePath: string;
 }
