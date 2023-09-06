@@ -4,6 +4,9 @@ import styled from "styled-components";
 import axios from "axios";
 import { useShoppingCartContext } from "../Context/ShoppingCartContext";
 import detectEthereumProvider from "@metamask/detect-provider";
+import PaymentForm from "./PaymentForm";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 const PopupContainer = styled.div`
   display: flex;
@@ -65,7 +68,10 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({ onClose, totalPrice }) => {
     const storedCart = localStorage.getItem("cartItems");
     return storedCart ? JSON.parse(storedCart) : [];
   });
-
+  const stripePromise = loadStripe(
+    "pk_test_51NmMkNA82S8GS4aYL72AhSvrx1SW1kioTpgW65QMMHh0U5THYJmr9gbiczSnUaoIP0Mab76TCvCyUtwVktUJBuZe00yVobWbOo"
+  );
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [wallet, setWallet] = useState<{ accounts: string[] }>({
     accounts: [],
   });
@@ -124,6 +130,10 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({ onClose, totalPrice }) => {
   };
 
   const handleBankCardClick = () => {
+    setShowPaymentForm(true);
+  };
+
+  const handlePaymentSuccess = () => {
     fetchItems();
     localStorage.removeItem("cartItems");
     clearCart();
@@ -184,9 +194,18 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({ onClose, totalPrice }) => {
             <PaymentButton onClick={handleBankCardClick}>
               Банкова карта
             </PaymentButton>
+
             <PaymentButton onClick={handleCryptoClick}>
               Плащане с криптовалута
             </PaymentButton>
+            {showPaymentForm && (
+              <Elements stripe={stripePromise}>
+                <PaymentForm
+                  amount={totalPrice}
+                  onPaymentSuccess={handlePaymentSuccess}
+                />
+              </Elements>
+            )}
           </>
         ) : (
           <p>Моля влезте в профила си, за да можете да заплатите.</p>
